@@ -14,45 +14,43 @@ The Diffie-Hellman key exchange is built on the principles of modular arithmetic
 
 ### 1. Public Agreement on Parameters
 The two communicating parties (let’s call them **Alice** and **Bob**) agree on two public numbers:  
-- A large **prime number** \( p \), which serves as the modulus.  
-- A **base (generator)** \( g \), which is a number less than \( p \) that will help generate keys.  
+- A large **prime number** `p`, which serves as the modulus.  
+- A **base (generator)** `g`, which is a number less than `p` that will help generate keys.  
 
-Both \( p \) and \( g \) are publicly known. Even an eavesdropper (Eve) can know these values without breaking the system.
+Both `p` and `g` are publicly known. Even an eavesdropper (Eve) can know these values without breaking the system.
 
 ### 2. Private Keys
-- Alice and Bob each select their own private, secret numbers: \( a \) for Alice and \( b \) for Bob.  
+- Alice and Bob each select their own private, secret numbers: `a` for Alice and `b` for Bob.  
   These numbers are random and **not shared with anyone**.
 
 ### 3. Compute Public Keys
-Using their private keys and the public base \( g \), both parties compute their respective public keys as:  
-\[
-A = g^a \, \text{mod} \, p \quad \text{(Alice's public key)}  
-\]  
-\[
-B = g^b \, \text{mod} \, p \quad \text{(Bob's public key)}  
-\]
-Here, \( g^a \, \text{mod} \, p \) and \( g^b \, \text{mod} \, p \) are essentially transformations of the secret numbers. Alice sends \( A \) to Bob, and Bob sends \( B \) to Alice. Since these values are exchanged publicly, Eve (the eavesdropper) can see them.
+Using their private keys and the public base `g`, both parties compute their respective public keys as:  
+Here, `g^a mod p` and `g^b mod p` are essentially transformations of the secret numbers. Alice sends `A` to Bob, and Bob sends `B` to Alice. Since these values are exchanged publicly, Eve (the eavesdropper) can see them.
+
+A = g^a mod p (Alice's public key) B = g^b mod p (Bob's public key)
+
+Here, `g^a mod p` and `g^b mod p` are essentially transformations of the secret numbers. Alice sends `A` to Bob, and Bob sends `B` to Alice. Since these values are exchanged publicly, Eve (the eavesdropper) can see them.
 
 ### 4. Shared Secret Generation
-Once Alice receives Bob’s public key \( B \) and Bob receives Alice’s public key \( A \), each can independently compute a shared secret \( S \) using their private keys:  
+Once Alice receives Bob’s public key `B` and Bob receives Alice’s public key `A`, each can independently compute a shared secret `S` using their private keys:  
 - Alice computes:  
-  \[
-  S = B^a \, \text{mod} \, p
-  \]  
 - Bob computes:  
-  \[
-  S = A^b \, \text{mod} \, p
-  \]
+S = B^a mod p
 
-Substituting \( A = g^a \, \text{mod} \, p \) and \( B = g^b \, \text{mod} \, p \), we find:  
-\[
-S = (g^b \, \text{mod} \, p)^a \, \text{mod} \, p = (g^a \, \text{mod} \, p)^b \, \text{mod} \, p = g^{ab} \, \text{mod} \, p
-\]
+- Bob computes:  
+S = A^b mod p
 
-The result is that both Alice and Bob arrive at the same shared secret \( S \), even though they never explicitly exchanged their private keys.
+Substituting `A = g^a mod p` and `B = g^b mod p`, we find:  
+S = (g^b mod p)^a mod p = (g^a mod p)^b mod p = g^(ab) mod p
+
+The result is that both Alice and Bob arrive at the same shared secret `S`, even though they never explicitly exchanged their private keys.
 
 ### 5. Why Is It Secure?
-At this point, Eve, who overheard \( p \), \( g \), \( A \), and \( B \), faces the **discrete logarithm problem**: given \( g \), \( p \), and \( g^a \, \text{mod} \, p \), it is computationally infeasible for Eve to determine \( a \) (or similarly, \( b \)). Without access to either private key, Eve cannot compute the shared secret \( S = g^{ab} \, \text{mod} \, p \).
+At this point, Eve, who overheard `p`, `g`, `A`, and `B`, faces the **discrete logarithm problem**: given `g`, `p`, and `g^a mod p`, it is computationally infeasible for Eve to determine `a` (or similarly, `b`). Without access to either private key, Eve cannot compute the shared secret:  
+S = g^(ab) mod p
+
+
+
 
 ---
 
